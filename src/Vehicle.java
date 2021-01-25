@@ -1,3 +1,4 @@
+import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -12,6 +13,7 @@ public class Vehicle {
     public SubNode subnode;
     private int[] node;
     private Boolean done = false;
+    Timeline animation;
 
     public Vehicle(double x, double y, double speed, boolean horizontal, int[] node) {
         this.x = x;
@@ -87,5 +89,9 @@ public class Vehicle {
 
     public Boolean getDone() {
         return done;
+    }
+
+    public void setAnimation(Timeline timeline) {
+        this.animation = timeline;
     }
 }

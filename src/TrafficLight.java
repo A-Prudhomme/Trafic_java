@@ -29,6 +29,18 @@ public class TrafficLight {
         return state;
     }
 
+    public String getPosition() {
+        return position;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
     public void draw(Group root) {
         Circle white_circle = new Circle(this.getX(), this.getY(), 4, Color.WHITE);
         Circle colored_circle = new Circle(this.getX(), this.getY(), 3, this.getState().getColor());

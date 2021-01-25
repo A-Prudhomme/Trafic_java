@@ -26,10 +26,11 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-    long tempo = 10;
+    long tempo = 100;
+    long traffic_light_change = 12000;
     Node[][] node;
     int nbNode = 4;
-    int nbSubnode = 100;
+    int nbSubnode =50;
     TrafficNetwork network = new TrafficNetwork(nbNode, nbSubnode);
 
     public static void main(String[] args) {
@@ -38,6 +39,10 @@ public class Main extends Application {
 
     public void animDeplacement(Group root){
         /*reset(root);*/
+        Timeline lights = new Timeline();
+        KeyFrame bougeVoiture = new KeyFrame(new Duration(12000), event-> {network.change_light(root);});
+        lights.getKeyFrames().add(bougeVoiture);
+        lights.play();
         network.vehicleForward(nbNode,nbSubnode);
         print_cars(root);
 
@@ -66,9 +71,7 @@ public class Main extends Application {
     private void print_cars(Group root) {
         for (Vehicle vehicleToDraw: network.getVehicles()) {
             Timeline timeline = new Timeline();
-            KeyFrame bougeVoiture = new KeyFrame(new Duration(tempo),
-                    new KeyValue(vehicleToDraw.getX(), vehicleToDraw.subnode.getX()),
-                    new KeyValue(vehicleToDraw.getY(), ydest));
+            KeyFrame bougeVoiture = new KeyFrame(new Duration(tempo), event-> {vehicleToDraw.draw(root);});
             timeline.getKeyFrames().add(bougeVoiture);
             timeline.play();
             vehicleToDraw.setAnimation(timeline);

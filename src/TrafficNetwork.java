@@ -1,3 +1,6 @@
+import javafx.scene.Group;
+import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
@@ -84,9 +87,11 @@ public class TrafficNetwork {
                     else {
                         Optional<SubNode> greater_subnodes = subnodes.stream().filter(subNode -> subNode.getX() > vehicle.subnode.getX() && subNode.getX() < next_node.getX() && subNode.getY() == vehicle.subnode.getY()).min(Comparator.comparing(SubNode::getX));
                         if(greater_subnodes.isEmpty()){
-                            vehicle.setNode(new int[]{vehicle.getNode()[0] + 1, vehicle.getNode()[1]});
-                            vehicle.setPosition(next_node);
-                            vehicle.subnode = null;
+                            if (next_node.getLeftLight().getState().getColor() == Color.GREEN) {
+                                vehicle.setNode(new int[]{vehicle.getNode()[0] + 1, vehicle.getNode()[1]});
+                                vehicle.setPosition(next_node);
+                                vehicle.subnode = null;
+                            }
                         }
                         else {
                             vehicle.subnode = greater_subnodes.get();
@@ -109,9 +114,11 @@ public class TrafficNetwork {
                     else {
                         Optional<SubNode> greater_subnodes = subnodes.stream().filter(subNode -> subNode.getX() == vehicle.subnode.getX() && subNode.getY() > next_node.getY() && subNode.getY() < vehicle.subnode.getY()).max(Comparator.comparing(SubNode::getY));
                         if(greater_subnodes.isEmpty()){
-                            vehicle.setNode(new int[]{vehicle.getNode()[0], vehicle.getNode()[1] - 1});
-                            vehicle.setPosition(next_node);
-                            vehicle.subnode = null;
+                            if (next_node.getBottomLight().getState().getColor() == Color.GREEN) {
+                                vehicle.setNode(new int[]{vehicle.getNode()[0], vehicle.getNode()[1] - 1});
+                                vehicle.setPosition(next_node);
+                                vehicle.subnode = null;
+                            }
                         }
                         else {
                             vehicle.subnode = greater_subnodes.get();
@@ -127,4 +134,11 @@ public class TrafficNetwork {
     }
 
 
+    public void change_light(Group root) {
+        for(Node[] list_node : nodes){
+            for(Node node : list_node) {
+                node.change_light(root);
+            }
+        }
+    }
 }
